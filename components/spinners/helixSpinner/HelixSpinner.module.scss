@@ -1,3 +1,6 @@
+@import "styles/palette";
+
+
 $dot-count: 26;
 $dot-size: 10px;
 $dot-space: 15px;
@@ -5,6 +8,9 @@ $dot-start: (($dot-count / 2 + 1) * ($dot-size + $dot-space)) / 2;
 
 $animation-time: 2s;
 $animation-distance: 25px;
+
+$primaryColor: $primary;
+$secondaryColor: lighten($secondary, 10%);
 
 .wrapper {
     display: flex;
@@ -53,7 +59,7 @@ $animation-distance: 25px;
             animation-duration: $animation-time;
             animation-iteration-count: infinite;
             animation-timing-function: ease;
-            background: white;
+            background: $secondaryColor;
             border-radius: 50%;
             content: '';
             display: block;
@@ -62,8 +68,8 @@ $animation-distance: 25px;
         }
 
         &:nth-of-type(even)::before {
-            background-color: #ff47aa;
-            box-shadow: inset 0 0 4px darken(#ff47aa, 10%);
+            background-color: $primaryColor;
+            box-shadow: inset 0 0 4px darken($primaryColor, 10%);
         }
     }
 }

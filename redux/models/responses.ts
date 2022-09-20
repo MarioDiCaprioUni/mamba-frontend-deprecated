@@ -72,3 +72,7 @@ export interface UserBasicDataResponse {
     lastName: string | null;
     profilePicture: number[] | null;
 }
+
+////////////////////////////////////////////////////////////
+
+export type SearchResultsResponse = Array<UserBasicDataResponse>;

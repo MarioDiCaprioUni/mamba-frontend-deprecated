@@ -139,6 +139,7 @@ const BtnMenu: React.FC<BtnMenuProps> = ({ user }) => {
 
 interface TopbarProps {
     user?: UserResponse;
+    onSearch?: (expression: string) => void;
 }
 
 /**
@@ -146,13 +147,17 @@ interface TopbarProps {
  * button menus.
  * @returns The topbar component
  */
-const Topbar: React.FC<TopbarProps> = ({ user }) => {
+const Topbar: React.FC<TopbarProps> = ({ user, onSearch }) => {
+    const onChange: React.ChangeEventHandler<HTMLInputElement> = (event) => {
+        if (onSearch) onSearch(event.target.value);
+    }
+
     return (
         <div className={styles.topbar}>
             {/* Search field */}
             <div className={styles.searchWrapper}>
                 <SearchIcon />
-                <input placeholder="Search..." className={styles.search} />
+                <input placeholder="Search..." className={styles.search} onInput={onChange} />
             </div>
             {/* Button menu */}
             <BtnMenu user={user} />

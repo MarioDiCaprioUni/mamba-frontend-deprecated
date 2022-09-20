@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import LoginPanel from "./loginPanel/LoginPanel";
 import AccountPanel from "./accountPanel/AccountPanel";
 import LinksPanel, { LinksPanelProps } from "./linksPanel/LinksPanel";
@@ -9,6 +9,7 @@ import { UserResponse } from "../../redux/models/responses";
 import useClient from "../../hooks/useClient";
 import { useRouter } from "next/router";
 import FriendsPanel from "./friendsPanel/FriendsPanel";
+import SearchResults from "./searchResults/SearchResults";
 
 
 /**
@@ -20,8 +21,6 @@ import FriendsPanel from "./friendsPanel/FriendsPanel";
  */
 const LoginOrAccountPanel: React.FC = () => {
     const { data, isLoading, isError } = useClient();
-    console.log(isLoading)
-    console.log(data)
 
     if (isLoading) {
         return <LoadingPanel />;
@@ -90,10 +89,28 @@ interface BaseProps {
 const Base: React.FC<BaseProps & LinksPanelProps> = (props) => {
     const router = useRouter();
     const { data: client } = useClient();
+    const [searchExpression, setSearchExpression] = useState<string>('');
 
     function handleMakePostButtonClicked() {
         router.push('/createPost');
     }
+
+    function handleSearch(expression: string) {
+        setSearchExpression(expression);
+    }
+
+    const context =
+        (searchExpression.length > 0)?
+            <SearchResults expression={searchExpression} />
+            :
+            <>
+                {/* Button to make a post */}
+                <button className={styles.makePostButton} onClick={handleMakePostButtonClicked}>
+                    Make A Post
+                </button>
+                {/* Content */}
+                { props.children }
+            </>
 
     return (
         <div className={styles.main}>
@@ -105,19 +122,14 @@ const Base: React.FC<BaseProps & LinksPanelProps> = (props) => {
             <div className={styles.container}>
 
                 {/* The topbar */}
-                <Topbar user={client} />
+                <Topbar user={client} onSearch={handleSearch} />
 
                 {/* A wrapper for the content- and members panel */}
                 <div className={styles.contextWrapper}>
 
                     {/* Wrapper for the actual content */}
                     <div className={styles.context}>
-                        {/* Button to make a post */}
-                        <button className={styles.makePostButton} onClick={handleMakePostButtonClicked}>
-                            Make A Post
-                        </button>
-                        {/* Content */}
-                        { props.children }
+                        { context }
                     </div>
                     
                     {/* The members panel */}

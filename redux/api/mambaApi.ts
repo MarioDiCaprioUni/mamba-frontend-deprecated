@@ -10,7 +10,15 @@ import {
     LoginRequest,
     RegisterRequest
 } from '../models/requests';
-import { LoginResponse, PageResponse, PostResponse, RegisterResponse, UserResponse, UserBasicDataResponse } from '../models/responses';
+import {
+    LoginResponse,
+    PageResponse,
+    PostResponse,
+    RegisterResponse,
+    UserResponse,
+    UserBasicDataResponse,
+    SearchResultsResponse
+} from '../models/responses';
 import { setLoginCredentials } from '../slices/loginCredentialsSlice';
 
 
@@ -215,7 +223,18 @@ export const mambaApi = createApi({
                 method: 'POST'
             }),
             invalidatesTags: ['User']
-        })
+        }),
+
+        /////////////////////////////////////////////////////////////////////////////////
+
+        searchUsers: build.query<SearchResultsResponse, string>({
+            query: (expression) => ({
+                url: '/search/users',
+                params: { expression },
+                method: 'GET'
+            }),
+            providesTags: ['User']
+        }),
 
     })
 });
@@ -235,7 +254,11 @@ export const {
     useCreateCommentMutation,
     useCreateRepostMutation,
     usePostAllQuery,
+    useUserSendFriendRequestMutation,
+    useUserAcceptFriendRequestMutation,
     // login
     useLoginMutation,
-    useUserBasicDataQuery
+    useUserBasicDataQuery,
+    // search
+    useSearchUsersQuery
 } = mambaApi;

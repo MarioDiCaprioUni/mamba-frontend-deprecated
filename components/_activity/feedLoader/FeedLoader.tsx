@@ -11,7 +11,6 @@ const FeedLoader: React.FC = () => {
     // TODO add pagination
     const [page, setPage] = useState<number>(1);
     const { data, isError, isLoading } = usePostAllQuery(1);
-    console.log(data)
 
     return (
         <PostList

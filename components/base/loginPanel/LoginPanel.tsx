@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useFormik } from "formik";
 import * as Yup from 'yup';
 import Link from "next/link";
@@ -50,9 +50,8 @@ const LoginPanel: React.FC = () => {
                     // if login successful: reload page
                     router.reload();
                 }
-            }).catch(error => {
+            }).catch(() => {
                 // if server error occured: stop loading and show error message
-                console.log(error);
                 formik.setErrors({ username: "Failed to connect to server" });
             });
         }
